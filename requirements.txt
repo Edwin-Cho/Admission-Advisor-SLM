@@ -1,0 +1,27 @@
+# Deep Learning Framework
+torch>=2.1.0
+
+# HuggingFace Ecosystem
+transformers>=4.36.0
+datasets>=2.16.0
+accelerate>=0.25.0
+peft>=0.7.0  # LoRA/QLoRA
+
+# Quantization
+bitsandbytes>=0.41.0
+
+# UI
+gradio>=4.0.0
+
+# Data Processing
+pydantic>=2.0.0
+pyyaml>=6.0.0
+
+# Utilities
+tqdm>=4.66.0
+numpy>=1.24.0
+pandas>=2.0.0
+
+# Evaluation
+rouge-score>=0.1.2
+nltk>=3.8.0

@@ -1,0 +1,146 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "StudentRecord",
+  "description": "성적 대비 좋은 대학 진학 학생의 비식별화된 생기부 데이터 스키마",
+  "type": "object",
+  "required": ["student_id", "profile", "admission_result", "activities"],
+  "properties": {
+    "student_id": {
+      "type": "string",
+      "description": "비식별화된 학생 ID (예: STU_2024_001)"
+    },
+    "profile": {
+      "type": "object",
+      "description": "학생 기본 프로필 (비식별화)",
+      "required": ["region", "track", "grade_tier"],
+      "properties": {
+        "region": {
+          "type": "string",
+          "enum": ["서울권", "수도권", "비수도권"],
+          "description": "지역 (비식별화)"
+        },
+        "track": {
+          "type": "string",
+          "enum": ["인문", "자연", "예체능", "통합"],
+          "description": "계열"
+        },
+        "grade_tier": {
+          "type": "string",
+          "enum": ["1등급대", "2등급대", "3등급대", "4등급대", "5등급대이하"],
+          "description": "내신 등급 구간 (비식별화)"
+        },
+        "interests": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "관심 분야 키워드"
+        },
+        "values": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "가치관/사회적 관심사"
+        }
+      }
+    },
+    "admission_result": {
+      "type": "object",
+      "description": "입시 결과 (비식별화)",
+      "required": ["university_tier", "major_category", "admission_type"],
+      "properties": {
+        "university_tier": {
+          "type": "string",
+          "enum": ["최상위권", "상위권", "중상위권", "중위권"],
+          "description": "대학 티어 (비식별화)"
+        },
+        "major_category": {
+          "type": "string",
+          "description": "전공 계열 (예: 컴퓨터공학, 경영학, 의예과 등)"
+        },
+        "admission_type": {
+          "type": "string",
+          "enum": ["학종", "교과", "논술", "실기"],
+          "description": "전형 유형"
+        },
+        "is_overperform": {
+          "type": "boolean",
+          "description": "성적 대비 상향 진학 여부"
+        }
+      }
+    },
+    "activities": {
+      "type": "array",
+      "description": "비교과/세특 활동 목록",
+      "items": {
+        "type": "object",
+        "required": ["category", "activity_type", "description", "neis_statement"],
+        "properties": {
+          "category": {
+            "type": "string",
+            "enum": ["세특", "동아리", "진로", "자율", "봉사", "독서", "수상", "기타"],
+            "description": "활동 분류"
+          },
+          "subject": {
+            "type": "string",
+            "description": "과목명 (세특인 경우)"
+          },
+          "activity_type": {
+            "type": "string",
+            "description": "활동 유형 (예: 탐구, 프로젝트, 실험, 발표 등)"
+          },
+          "role": {
+            "type": "string",
+            "description": "역할 (예: 팀장, 연구자, 발표자 등)"
+          },
+          "description": {
+            "type": "string",
+            "description": "활동 내용 요약 (컨설턴트가 핵심만 정리)"
+          },
+          "neis_statement": {
+            "type": "string",
+            "description": "실제 NEIS에 기재된 문장"
+          },
+          "major_connection": {
+            "type": "string",
+            "description": "전공 연결성 (컨설턴트 분석)"
+          },
+          "uniqueness_score": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5,
+            "description": "활동의 신박함/차별성 점수 (컨설턴트 평가, 1-5)"
+          },
+          "effectiveness_score": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5,
+            "description": "합격 기여도 점수 (컨설턴트 평가, 1-5)"
+          },
+          "tags": {
+            "type": "array",
+            "items": {"type": "string"},
+            "description": "활동 태그 (예: AI, 데이터분석, 사회문제, 리더십 등)"
+          }
+        }
+      }
+    },
+    "consultant_notes": {
+      "type": "object",
+      "description": "입시 컨설턴트의 분석 의견",
+      "properties": {
+        "key_strengths": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "이 학생의 핵심 강점"
+        },
+        "winning_activities": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "합격에 결정적이었던 활동들"
+        },
+        "narrative_summary": {
+          "type": "string",
+          "description": "학생의 스토리/서사 요약"
+        }
+      }
+    }
+  }
+}
