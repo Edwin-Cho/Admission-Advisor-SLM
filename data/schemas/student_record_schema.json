@@ -1,33 +1,68 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "StudentRecord",
-  "description": "성적 대비 좋은 대학 진학 학생의 비식별화된 생기부 데이터 스키마",
+  "description": "성적 대비 상향 진학 학생의 비식별화된 생기부 데이터 스키마 v2",
   "type": "object",
-  "required": ["student_id", "profile", "admission_result", "activities"],
+  "required": ["student_id", "school_info", "grades", "target_major", "activities", "admission_result"],
   "properties": {
     "student_id": {
       "type": "string",
       "description": "비식별화된 학생 ID (예: STU_2024_001)"
     },
-    "profile": {
+
+    "school_info": {
       "type": "object",
-      "description": "학생 기본 프로필 (비식별화)",
-      "required": ["region", "track", "grade_tier"],
+      "description": "학교 정보 (비식별화)",
+      "required": ["region", "school_type"],
       "properties": {
         "region": {
           "type": "string",
-          "enum": ["서울권", "수도권", "비수도권"],
-          "description": "지역 (비식별화)"
+          "enum": ["서울", "경기", "수도권", "비수도권"],
+          "description": "지역 구분"
         },
-        "track": {
+        "school_type": {
           "type": "string",
-          "enum": ["인문", "자연", "예체능", "통합"],
-          "description": "계열"
-        },
-        "grade_tier": {
+          "enum": ["평준화", "비평준화", "자사고", "특목고", "영재고"],
+          "description": "학교 유형"
+        }
+      }
+    },
+
+    "grades": {
+      "type": "object",
+      "description": "성적 정보 (교과)",
+      "required": ["overall_tier"],
+      "properties": {
+        "overall_tier": {
           "type": "string",
           "enum": ["1등급대", "2등급대", "3등급대", "4등급대", "5등급대이하"],
-          "description": "내신 등급 구간 (비식별화)"
+          "description": "전과목 평균 등급대"
+        },
+        "major_subjects_tier": {
+          "type": "string",
+          "enum": ["1등급대", "2등급대", "3등급대", "4등급대", "5등급대이하"],
+          "description": "주요 교과(국영수+탐구) 평균 등급대"
+        },
+        "career_selection_ratio": {
+          "type": "string",
+          "description": "진로선택과목 A등급 비율 (예: 'A 80%', 'A 60%')"
+        }
+      }
+    },
+
+    "target_major": {
+      "type": "object",
+      "description": "희망 전공 정보",
+      "required": ["track"],
+      "properties": {
+        "track": {
+          "type": "string",
+          "enum": ["인문", "사회", "자연", "공학", "의약", "예체능"],
+          "description": "대계열"
+        },
+        "specific": {
+          "type": "string",
+          "description": "세부 전공 (예: 컴퓨터공학, 경영학, 의예과, 미술, 체육교육 등)"
         },
         "interests": {
           "type": "array",
@@ -41,87 +76,105 @@
         }
       }
     },
+
+    "activities": {
+      "type": "object",
+      "description": "활동 정보 (교과/비교과 분리)",
+      "properties": {
+        "curricular": {
+          "type": "array",
+          "description": "교과 연계 활동 (세특 등)",
+          "items": { "$ref": "#/$defs/activity" }
+        },
+        "extracurricular": {
+          "type": "array",
+          "description": "비교과 활동 (동아리, 봉사, 진로 등)",
+          "items": { "$ref": "#/$defs/activity" }
+        }
+      }
+    },
+
+    "special_notes": {
+      "type": "object",
+      "description": "특기사항",
+      "properties": {
+        "subject_specific": {
+          "type": "array",
+          "description": "세부능력특기사항 (교과별)",
+          "items": {
+            "type": "object",
+            "required": ["subject", "neis_statement"],
+            "properties": {
+              "subject": {
+                "type": "string",
+                "description": "과목명"
+              },
+              "neis_statement": {
+                "type": "string",
+                "description": "NEIS 기재 문장"
+              },
+              "major_connection": {
+                "type": "string",
+                "description": "전공 연결성"
+              },
+              "uniqueness_score": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 5,
+                "description": "차별성 점수 (1-5)"
+              }
+            }
+          }
+        },
+        "behavioral": {
+          "type": "object",
+          "description": "행동발달특기사항",
+          "properties": {
+            "neis_statement": {
+              "type": "string",
+              "description": "행특 NEIS 기재 문장"
+            },
+            "key_traits": {
+              "type": "array",
+              "items": {"type": "string"},
+              "description": "핵심 특성 키워드 (예: 리더십, 협업, 성실성)"
+            }
+          }
+        }
+      }
+    },
+
     "admission_result": {
       "type": "object",
-      "description": "입시 결과 (비식별화)",
-      "required": ["university_tier", "major_category", "admission_type"],
+      "description": "입시 결과",
+      "required": ["university_tier", "major", "admission_type", "performance_level"],
       "properties": {
         "university_tier": {
           "type": "string",
           "enum": ["최상위권", "상위권", "중상위권", "중위권"],
           "description": "대학 티어 (비식별화)"
         },
-        "major_category": {
+        "university": {
           "type": "string",
-          "description": "전공 계열 (예: 컴퓨터공학, 경영학, 의예과 등)"
+          "description": "대학명 (선택, 비식별화 가능)"
+        },
+        "major": {
+          "type": "string",
+          "description": "합격 학과"
         },
         "admission_type": {
           "type": "string",
           "enum": ["학종", "교과", "논술", "실기"],
           "description": "전형 유형"
         },
-        "is_overperform": {
-          "type": "boolean",
-          "description": "성적 대비 상향 진학 여부"
+        "performance_level": {
+          "type": "string",
+          "enum": ["상향", "적정", "하향"],
+          "description": "성적 대비 진학 결과"
         }
       }
     },
-    "activities": {
-      "type": "array",
-      "description": "비교과/세특 활동 목록",
-      "items": {
-        "type": "object",
-        "required": ["category", "activity_type", "description", "neis_statement"],
-        "properties": {
-          "category": {
-            "type": "string",
-            "enum": ["세특", "동아리", "진로", "자율", "봉사", "독서", "수상", "기타"],
-            "description": "활동 분류"
-          },
-          "subject": {
-            "type": "string",
-            "description": "과목명 (세특인 경우)"
-          },
-          "activity_type": {
-            "type": "string",
-            "description": "활동 유형 (예: 탐구, 프로젝트, 실험, 발표 등)"
-          },
-          "role": {
-            "type": "string",
-            "description": "역할 (예: 팀장, 연구자, 발표자 등)"
-          },
-          "description": {
-            "type": "string",
-            "description": "활동 내용 요약 (컨설턴트가 핵심만 정리)"
-          },
-          "neis_statement": {
-            "type": "string",
-            "description": "실제 NEIS에 기재된 문장"
-          },
-          "major_connection": {
-            "type": "string",
-            "description": "전공 연결성 (컨설턴트 분석)"
-          },
-          "uniqueness_score": {
-            "type": "integer",
-            "minimum": 1,
-            "maximum": 5,
-            "description": "활동의 신박함/차별성 점수 (컨설턴트 평가, 1-5)"
-          },
-          "effectiveness_score": {
-            "type": "integer",
-            "minimum": 1,
-            "maximum": 5,
-            "description": "합격 기여도 점수 (컨설턴트 평가, 1-5)"
-          },
-          "tags": {
-            "type": "array",
-            "items": {"type": "string"},
-            "description": "활동 태그 (예: AI, 데이터분석, 사회문제, 리더십 등)"
-          }
-        }
-      }
-    },
+
     "consultant_notes": {
       "type": "object",
       "description": "입시 컨설턴트의 분석 의견",
@@ -139,6 +192,61 @@
         "narrative_summary": {
           "type": "string",
           "description": "학생의 스토리/서사 요약"
+        }
+      }
+    }
+  },
+
+  "$defs": {
+    "activity": {
+      "type": "object",
+      "required": ["category", "description"],
+      "properties": {
+        "category": {
+          "type": "string",
+          "enum": ["세특", "동아리", "진로", "자율", "봉사", "독서", "기타"],
+          "description": "활동 분류"
+        },
+        "subject": {
+          "type": "string",
+          "description": "관련 과목 (세특인 경우)"
+        },
+        "activity_type": {
+          "type": "string",
+          "description": "활동 유형 (예: 탐구, 프로젝트, 실험, 발표 등)"
+        },
+        "role": {
+          "type": "string",
+          "description": "역할 (예: 팀장, 연구자, 발표자 등)"
+        },
+        "description": {
+          "type": "string",
+          "description": "활동 내용 요약"
+        },
+        "neis_statement": {
+          "type": "string",
+          "description": "NEIS에 기재된 문장"
+        },
+        "major_connection": {
+          "type": "string",
+          "description": "전공 연결성 (컨설턴트 분석)"
+        },
+        "uniqueness_score": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5,
+          "description": "차별성 점수 (1-5)"
+        },
+        "effectiveness_score": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5,
+          "description": "합격 기여도 점수 (1-5)"
+        },
+        "tags": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "활동 태그"
         }
       }
     }

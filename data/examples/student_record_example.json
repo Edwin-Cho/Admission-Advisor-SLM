@@ -1,80 +1,116 @@
 {
   "student_id": "STU_2024_001",
-  "profile": {
-    "region": "수도권",
-    "track": "자연",
-    "grade_tier": "3등급대",
+
+  "school_info": {
+    "region": "경기",
+    "school_type": "평준화"
+  },
+
+  "grades": {
+    "overall_tier": "3등급대",
+    "major_subjects_tier": "3등급대",
+    "career_selection_ratio": "A 70%"
+  },
+
+  "target_major": {
+    "track": "공학",
+    "specific": "컴퓨터공학",
     "interests": ["인공지능", "데이터분석", "알고리즘"],
     "values": ["AI 윤리", "디지털 격차 해소"]
   },
+
+  "activities": {
+    "curricular": [
+      {
+        "category": "세특",
+        "subject": "정보",
+        "activity_type": "탐구프로젝트",
+        "role": "연구자",
+        "description": "이미지 분류 데이터셋의 클래스 불균형 문제를 발견하고, 언더샘플링과 오버샘플링 기법을 직접 구현하여 비교 실험 수행.",
+        "neis_statement": "이미지 분류 데이터셋의 클래스 불균형 문제를 탐구하며 언더/오버샘플링 방법을 비교하고, 혼동행렬을 직접 계산해 클래스별 성능을 분석하는 등 데이터 편향과 공정성 관점에서 문제를 점검하는 태도를 보임.",
+        "major_connection": "AI/ML의 데이터 품질 문제와 모델 공정성 이슈 직접 연결",
+        "uniqueness_score": 5,
+        "effectiveness_score": 5,
+        "tags": ["AI", "데이터분석", "공정성", "실험"]
+      },
+      {
+        "category": "세특",
+        "subject": "수학",
+        "activity_type": "심화탐구",
+        "role": "발표자",
+        "description": "행렬 연산의 기하학적 의미를 탐구하고, 이미지 변환(회전, 스케일링)에 적용. 선형대수와 컴퓨터 그래픽스의 연결성 발표.",
+        "neis_statement": "행렬 연산의 기하학적 의미를 탐구하여 이미지 변환에 적용하고, 선형대수가 컴퓨터 그래픽스에서 어떻게 활용되는지 발표하며 수학과 공학의 연결성을 보여줌.",
+        "major_connection": "선형대수 → 컴퓨터그래픽스/딥러닝 기초 연결",
+        "uniqueness_score": 4,
+        "effectiveness_score": 4,
+        "tags": ["수학", "선형대수", "그래픽스", "융합"]
+      }
+    ],
+    "extracurricular": [
+      {
+        "category": "동아리",
+        "activity_type": "프로젝트",
+        "role": "팀장",
+        "description": "코딩 동아리에서 학교 급식 만족도 예측 모델 개발. 설문 데이터 수집부터 분석, 시각화까지 전 과정 주도.",
+        "neis_statement": "코딩 동아리 팀장으로 학교 급식 만족도 예측 프로젝트를 주도하며 데이터 수집, 분석, 시각화 전 과정을 이끌고 팀원들의 역할 분담과 협업을 조율하는 리더십을 발휘함.",
+        "major_connection": "데이터 사이언스 프로젝트 경험, 실제 문제 해결",
+        "uniqueness_score": 4,
+        "effectiveness_score": 5,
+        "tags": ["데이터분석", "리더십", "협업", "실생활문제"]
+      },
+      {
+        "category": "진로",
+        "activity_type": "체험활동",
+        "role": "참가자",
+        "description": "AI 스타트업 현장 체험. 개발자 인터뷰를 통해 실무에서의 AI 윤리 고민 청취.",
+        "neis_statement": "AI 스타트업 현장 체험에 참가하여 개발자 인터뷰를 진행하며 실무에서의 AI 윤리적 고민과 기술 개발 과정에 대한 이해를 넓히고 진로에 대한 구체적인 비전을 수립함.",
+        "major_connection": "AI 분야 실무 이해, 윤리적 관점 강화",
+        "uniqueness_score": 3,
+        "effectiveness_score": 4,
+        "tags": ["진로탐색", "AI윤리", "현장체험"]
+      },
+      {
+        "category": "독서",
+        "activity_type": "독서토론",
+        "role": "토론자",
+        "description": "'대량살상수학무기' 독서 후 알고리즘 편향 문제에 대해 토론. 기술의 사회적 책임에 대한 에세이 작성.",
+        "neis_statement": "캐시 오닐의 '대량살상수학무기'를 읽고 알고리즘 편향 문제를 토론하며 기술 개발자의 사회적 책임에 대한 에세이를 작성하는 등 기술 윤리에 대한 깊은 성찰을 보여줌.",
+        "major_connection": "AI 윤리, 기술의 사회적 영향에 대한 관심",
+        "uniqueness_score": 4,
+        "effectiveness_score": 4,
+        "tags": ["독서", "AI윤리", "사회문제", "비판적사고"]
+      }
+    ]
+  },
+
+  "special_notes": {
+    "subject_specific": [
+      {
+        "subject": "정보",
+        "neis_statement": "이미지 분류 데이터셋의 클래스 불균형 문제를 탐구하며 언더/오버샘플링 방법을 비교하고, 혼동행렬을 직접 계산해 클래스별 성능을 분석하는 등 데이터 편향과 공정성 관점에서 문제를 점검하는 태도를 보임.",
+        "major_connection": "AI/ML 데이터 품질 및 공정성",
+        "uniqueness_score": 5
+      },
+      {
+        "subject": "수학",
+        "neis_statement": "행렬 연산의 기하학적 의미를 탐구하여 이미지 변환에 적용하고, 선형대수가 컴퓨터 그래픽스에서 어떻게 활용되는지 발표하며 수학과 공학의 연결성을 보여줌.",
+        "major_connection": "선형대수 → 딥러닝 기초",
+        "uniqueness_score": 4
+      }
+    ],
+    "behavioral": {
+      "neis_statement": "타인의 의견을 경청하며 협력적으로 문제를 해결하는 자세가 돋보이며, 기술의 사회적 영향에 대해 깊이 고민하는 성숙한 태도를 보임.",
+      "key_traits": ["협업", "경청", "사회적 책임감"]
+    }
+  },
+
   "admission_result": {
     "university_tier": "상위권",
-    "major_category": "컴퓨터공학",
+    "major": "컴퓨터공학",
     "admission_type": "학종",
-    "is_overperform": true
+    "performance_level": "상향"
   },
-  "activities": [
-    {
-      "category": "세특",
-      "subject": "정보",
-      "activity_type": "탐구프로젝트",
-      "role": "연구자",
-      "description": "이미지 분류 데이터셋의 클래스 불균형 문제를 발견하고, 언더샘플링과 오버샘플링 기법을 직접 구현하여 비교 실험 수행. 혼동행렬을 활용해 클래스별 성능 차이 분석.",
-      "neis_statement": "이미지 분류 데이터셋의 클래스 불균형 문제를 탐구하며 언더/오버샘플링 방법을 비교하고, 혼동행렬을 직접 계산해 클래스별 성능을 분석하는 등 데이터 편향과 공정성 관점에서 문제를 점검하는 태도를 보임.",
-      "major_connection": "AI/ML의 데이터 품질 문제와 모델 공정성 이슈 직접 연결",
-      "uniqueness_score": 5,
-      "effectiveness_score": 5,
-      "tags": ["AI", "데이터분석", "공정성", "실험"]
-    },
-    {
-      "category": "세특",
-      "subject": "수학",
-      "activity_type": "심화탐구",
-      "role": "발표자",
-      "description": "행렬 연산의 기하학적 의미를 탐구하고, 이미지 변환(회전, 스케일링)에 적용. 선형대수와 컴퓨터 그래픽스의 연결성 발표.",
-      "neis_statement": "행렬 연산의 기하학적 의미를 탐구하여 이미지 변환에 적용하고, 선형대수가 컴퓨터 그래픽스에서 어떻게 활용되는지 발표하며 수학과 공학의 연결성을 보여줌.",
-      "major_connection": "선형대수 → 컴퓨터그래픽스/딥러닝 기초 연결",
-      "uniqueness_score": 4,
-      "effectiveness_score": 4,
-      "tags": ["수학", "선형대수", "그래픽스", "융합"]
-    },
-    {
-      "category": "동아리",
-      "subject": null,
-      "activity_type": "프로젝트",
-      "role": "팀장",
-      "description": "코딩 동아리에서 학교 급식 만족도 예측 모델 개발. 설문 데이터 수집부터 분석, 시각화까지 전 과정 주도.",
-      "neis_statement": "코딩 동아리 팀장으로 학교 급식 만족도 예측 프로젝트를 주도하며 데이터 수집, 분석, 시각화 전 과정을 이끌고 팀원들의 역할 분담과 협업을 조율하는 리더십을 발휘함.",
-      "major_connection": "데이터 사이언스 프로젝트 경험, 실제 문제 해결",
-      "uniqueness_score": 4,
-      "effectiveness_score": 5,
-      "tags": ["데이터분석", "리더십", "협업", "실생활문제"]
-    },
-    {
-      "category": "진로",
-      "subject": null,
-      "activity_type": "체험활동",
-      "role": "참가자",
-      "description": "AI 스타트업 현장 체험. 개발자 인터뷰를 통해 실무에서의 AI 윤리 고민 청취.",
-      "neis_statement": "AI 스타트업 현장 체험에 참가하여 개발자 인터뷰를 진행하며 실무에서의 AI 윤리적 고민과 기술 개발 과정에 대한 이해를 넓히고 진로에 대한 구체적인 비전을 수립함.",
-      "major_connection": "AI 분야 실무 이해, 윤리적 관점 강화",
-      "uniqueness_score": 3,
-      "effectiveness_score": 4,
-      "tags": ["진로탐색", "AI윤리", "현장체험"]
-    },
-    {
-      "category": "독서",
-      "subject": null,
-      "activity_type": "독서토론",
-      "role": "토론자",
-      "description": "'대량살상수학무기' 독서 후 알고리즘 편향 문제에 대해 토론. 기술의 사회적 책임에 대한 에세이 작성.",
-      "neis_statement": "캐시 오닐의 '대량살상수학무기'를 읽고 알고리즘 편향 문제를 토론하며 기술 개발자의 사회적 책임에 대한 에세이를 작성하는 등 기술 윤리에 대한 깊은 성찰을 보여줌.",
-      "major_connection": "AI 윤리, 기술의 사회적 영향에 대한 관심",
-      "uniqueness_score": 4,
-      "effectiveness_score": 4,
-      "tags": ["독서", "AI윤리", "사회문제", "비판적사고"]
-    }
-  ],
+
   "consultant_notes": {
     "key_strengths": [
       "데이터 편향/공정성이라는 일관된 관심사 관통",
