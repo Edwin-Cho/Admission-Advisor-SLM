@@ -122,7 +122,7 @@ def ask(prompt: str, max_tokens: int = 500, temperature: float = 0.7) -> str: # 
 
 def ask_stream(
     prompt: str,
-    max_tokens: int = 500, # max_tokens를 500으로 수정
+    max_tokens: int = 800,  # max_tokens를 800으로 증가
     temperature: float = 0.7,
 ) -> Iterator[Tuple[str, str]]:
     if not is_loaded:
@@ -139,11 +139,19 @@ def ask_stream(
     txt = tokenizer.apply_chat_template(msgs, tokenize=False, add_generation_prompt=True)
     inp = tokenizer(txt, return_tensors="pt").to(model.device)
 
-    streamer = TextIteratorStreamer(
-        tokenizer,
-        skip_special_tokens=True,
-        timeout=60,
-    )
+    try:
+        streamer = TextIteratorStreamer(
+            tokenizer,
+            skip_special_tokens=True,
+            timeout=120,  # timeout을 120초로 증가
+            skip_prompt=True,
+        )
+    except TypeError:
+        streamer = TextIteratorStreamer(
+            tokenizer,
+            skip_special_tokens=True,
+            timeout=120,  # timeout을 120초로 증가
+        )
 
     gen_kwargs = {
         **inp,
@@ -226,11 +234,6 @@ def copy_to_clipboard(text: str) -> str:
     return f"✅ 복사됨 ({char_count}자)"
 
 
-def count_chars(text: str) -> str:
-    """글자 수 카운터"""
-    return f"{len(text)}자"
-
-
 def create_ui(show_model_tab: bool = True):
     """Gradio UI 생성"""
     with gr.Blocks(title="SA_SLM") as app:
@@ -271,7 +274,7 @@ def create_ui(show_model_tab: bool = True):
                 with gr.Column():
                     track_input = gr.Dropdown(
                         label="계열",
-                        choices=["자연", "인문", "통합"],
+                        choices=["자연", "인문", "예체능"],
                         value="자연"
                     )
                     grade_tier_input = gr.Dropdown(
@@ -288,8 +291,8 @@ def create_ui(show_model_tab: bool = True):
                 with gr.Column():
                     interests_input = gr.Textbox(
                         label="관심 분야 (쉼표로 구분)",
-                        placeholder="AI, XAI, AGI, 빅데이터, 데이터사이언스, ",
-                        value="AI, XAI, AGI, 빅데이터, 데이터사이언스, ",
+                        placeholder="AI, XAI, AGI, 빅데이터, 데이터사이언스",
+                        value="AI, XAI, AGI, 빅데이터, 데이터사이언스",
                     )
                     values_input = gr.Textbox(
                         label="가치관/사회 관심 (쉼표로 구분)",
@@ -303,7 +306,6 @@ def create_ui(show_model_tab: bool = True):
                 recommend_copy_btn = gr.Button("📋 복사")
             recommend_status = gr.Textbox(label="상태", interactive=False)
             recommend_output = gr.Textbox(label="추천 결과", lines=10, interactive=False)
-            recommend_char_count = gr.Textbox(label="글자 수", interactive=False, scale=0)
             
             def recommend_with_save(*args):
                 last_inputs["recommend"] = {
@@ -311,26 +313,26 @@ def create_ui(show_model_tab: bool = True):
                     "values": args[3], "target_major": args[4]
                 }
                 for status, text in recommend_activities_stream(*args):
-                    yield status, text, f"{len(text)}자"
+                    yield status, text
             
             def recommend_regenerate():
                 inp = last_inputs["recommend"]
                 if not inp:
-                    yield "⚠️ 먼저 추천을 실행하세요", "", "0자"
+                    yield "⚠️ 먼저 추천을 실행하세요", ""
                     return
                 for status, text in recommend_activities_stream(
                     inp["track"], inp["grade_tier"], inp["interests"], inp["values"], inp["target_major"]
                 ):
-                    yield status, text, f"{len(text)}자"
+                    yield status, text
             
             recommend_btn.click(
                 recommend_with_save,
                 inputs=[track_input, grade_tier_input, interests_input, values_input, target_major_input],
-                outputs=[recommend_status, recommend_output, recommend_char_count]
+                outputs=[recommend_status, recommend_output]
             )
             recommend_regen_btn.click(
                 recommend_regenerate,
-                outputs=[recommend_status, recommend_output, recommend_char_count]
+                outputs=[recommend_status, recommend_output]
             )
             recommend_copy_btn.click(
                 None,
@@ -359,29 +361,28 @@ def create_ui(show_model_tab: bool = True):
                 statement_copy_btn = gr.Button("📋 복사")
             statement_status = gr.Textbox(label="상태", interactive=False)
             statement_output = gr.Textbox(label="생성된 문장", lines=5, interactive=False)
-            statement_char_count = gr.Textbox(label="글자 수", interactive=False, scale=0)
             
             def statement_with_save(subject, activity):
                 last_inputs["statement"] = {"subject": subject, "activity": activity}
                 for status, text in generate_statement_stream(subject, activity):
-                    yield status, text, f"{len(text)}자"
+                    yield status, text
             
             def statement_regenerate():
                 inp = last_inputs["statement"]
                 if not inp:
-                    yield "⚠️ 먼저 문장 생성을 실행하세요", "", "0자"
+                    yield "⚠️ 먼저 문장 생성을 실행하세요", ""
                     return
                 for status, text in generate_statement_stream(inp["subject"], inp["activity"]):
-                    yield status, text, f"{len(text)}자"
+                    yield status, text
             
             statement_btn.click(
                 statement_with_save,
                 inputs=[subject_input, activity_input],
-                outputs=[statement_status, statement_output, statement_char_count]
+                outputs=[statement_status, statement_output]
             )
             statement_regen_btn.click(
                 statement_regenerate,
-                outputs=[statement_status, statement_output, statement_char_count]
+                outputs=[statement_status, statement_output]
             )
             statement_copy_btn.click(
                 None,
@@ -410,29 +411,28 @@ def create_ui(show_model_tab: bool = True):
                 evaluate_copy_btn = gr.Button("📋 복사")
             evaluate_status = gr.Textbox(label="상태", interactive=False)
             evaluate_output = gr.Textbox(label="평가 결과", lines=10, interactive=False)
-            evaluate_char_count = gr.Textbox(label="글자 수", interactive=False, scale=0)
             
             def evaluate_with_save(statement, major):
                 last_inputs["evaluate"] = {"statement": statement, "major": major}
                 for status, text in evaluate_statement_stream(statement, major):
-                    yield status, text, f"{len(text)}자"
+                    yield status, text
             
             def evaluate_regenerate():
                 inp = last_inputs["evaluate"]
                 if not inp:
-                    yield "⚠️ 먼저 평가를 실행하세요", "", "0자"
+                    yield "⚠️ 먼저 평가를 실행하세요", ""
                     return
                 for status, text in evaluate_statement_stream(inp["statement"], inp["major"]):
-                    yield status, text, f"{len(text)}자"
+                    yield status, text
             
             evaluate_btn.click(
                 evaluate_with_save,
                 inputs=[eval_statement_input, eval_major_input],
-                outputs=[evaluate_status, evaluate_output, evaluate_char_count]
+                outputs=[evaluate_status, evaluate_output]
             )
             evaluate_regen_btn.click(
                 evaluate_regenerate,
-                outputs=[evaluate_status, evaluate_output, evaluate_char_count]
+                outputs=[evaluate_status, evaluate_output]
             )
             evaluate_copy_btn.click(
                 None,

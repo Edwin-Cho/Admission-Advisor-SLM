@@ -7,6 +7,19 @@
 
 ---
 
+## 🏗️ 아키텍처 | Architecture
+
+![SA-SLM Architecture](docs/images/SA_SLM_Project_diagram.png)
+
+<details>
+<summary>상세 파이프라인 보기 | View Detailed Pipeline</summary>
+
+![SA-SLM Detailed Pipeline](docs/images/SA_SLM_Project_overview.png)
+
+</details>
+
+---
+
 ## 개요 | Overview
 
 | 항목 | 내용 |
@@ -29,8 +42,10 @@ SA_SLM/
 ├── data/
 │   ├── examples/               # Sample/test data
 │   └── schemas/                # JSON schemas for data collection
-├── docs/                       # Documentation
-├── SA_SLM_SRS.md              # Software Requirements Specification
+├── docs/
+│   ├── images/                # Architecture diagrams
+│   ├── SA_SLM_SRS.md          # Software Requirements Specification
+│   └── how_to_run_directions.md
 ├── requirements.txt
 └── README.md
 ```
@@ -108,6 +123,17 @@ python ui/app.py --adapter ./adapter --share --auth
 - **Training**: Google Colab (T4 GPU)
 - **Inference**: Local (Apple Silicon MPS / CUDA) or Colab
 - **UI**: Gradio with streaming output
+
+### Architecture
+
+![SA-SLM Architecture](docs/images/SA_SLM_Project_diagram.png)
+
+<details>
+<summary>View Detailed Pipeline</summary>
+
+![SA-SLM Detailed Pipeline](docs/images/SA_SLM_Project_overview.png)
+
+</details>
 
 ### License
 
