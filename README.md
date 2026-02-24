@@ -28,7 +28,7 @@
 | **베이스 모델** | Qwen2.5-3B-Instruct |
 | **파인튜닝** | LoRA (r=16, 4-bit NF4 Quantization) |
 | **학습 환경** | Google Colab (T4 GPU) |
-| **추론 환경** | Colab / Local (Apple Silicon, CUDA) |
+| **추론 환경** | Colab / Local (CUDA with 4-bit quantization) |
 
 ## 프로젝트 구조 | Project Structure
 
@@ -95,6 +95,29 @@ python ui/app.py --adapter ./adapter --share --auth
 `docs/data_collection_guide.md` 참고. 컨설턴트가 PDF → JSON 변환 수행.  
 *Refer to the guide. Consultants perform PDF → JSON conversion.*
 
+## 학습 결과 | Training Results
+
+| 항목 | 값 |
+| :--- | :--- |
+| **학습 데이터** | 721 examples (101 student records + task templates) |
+| **학습 환경** | Google Colab T4 GPU |
+| **에포크** | 10 epochs |
+| **최종 Training Loss** | **0.144** |
+| **학습 시간** | ~39분 (2,334초) |
+| **Adapter 크기** | ~50–100MB (LoRA weights only) |
+
+### 샘플 입출력 | Sample Input/Output
+
+**입력 (활동 추천)**:
+> 계열: 공학, 성적: 3등급대, 관심: 인공지능, 데이터사이언스, 가치관: AI 윤리, 디지털 격차 해소, 목표: 컴퓨터공학
+
+**출력 예시**:
+> AI 윤리 기반 데이터 편향 탐구 보고서 작성, 디지털 리터러시 교육 봉사 기획, 오픈소스 AI 모델 활용 소규모 프로젝트 수행 등 차별화된 활동을 추천합니다.
+
+*Note: 출력은 학습 데이터와 temperature 설정에 따라 달라질 수 있습니다.*
+
+---
+
 ## 주의사항 | Disclaimer
 
 - 이 시스템은 **보조 도구**입니다. 최종 생기부 확정은 컨설턴트가 수행합니다.  
@@ -121,7 +144,7 @@ python ui/app.py --adapter ./adapter --share --auth
 - **Base Model**: Qwen2.5-3B-Instruct
 - **Fine-tuning**: LoRA (r=16) with 4-bit NF4 quantization
 - **Training**: Google Colab (T4 GPU)
-- **Inference**: Local (Apple Silicon MPS / CUDA) or Colab
+- **Inference**: Local (CUDA with 4-bit quantization) or Colab
 - **UI**: Gradio with streaming output
 
 ### Architecture
