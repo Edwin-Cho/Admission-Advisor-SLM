@@ -37,6 +37,14 @@ def load_model(adapter_path: str) -> str:
     adapter_path = Path(adapter_path)
     if not adapter_path.exists():
         return f"❌ 경로가 존재하지 않습니다: {adapter_path}"
+
+    if not torch.cuda.is_available():
+        return (
+            "❌ CUDA GPU를 찾을 수 없습니다. 이 UI는 bitsandbytes 4-bit(NF4) 로드를 사용하므로 "
+            "일반적으로 CUDA 환경에서만 동작합니다.\n"
+            "- 권장: Google Colab(T4) 또는 로컬 CUDA GPU 환경\n"
+            "- 참고: Apple Silicon(MPS)에서는 bitsandbytes 4-bit가 지원되지 않거나 실패할 수 있습니다."
+        )
     
     try:
         BASE_MODEL = "Qwen/Qwen2.5-3B-Instruct"

@@ -28,7 +28,7 @@
 | **베이스 모델** | Qwen2.5-3B-Instruct |
 | **파인튜닝** | LoRA (r=16, 4-bit NF4 Quantization) |
 | **학습 환경** | Google Colab (T4 GPU) |
-| **추론 환경** | Colab / Local (CUDA with 4-bit quantization) |
+| **추론 환경** | Colab / Local (CUDA with 4-bit quantization via bitsandbytes) |
 
 ## 프로젝트 구조 | Project Structure
 
@@ -60,6 +60,9 @@ SA_SLM/
 4. 학습 완료 후 `sa_slm_adapter.zip` 다운로드 | Download adapter after training
 
 ### 2. 로컬 UI 실행 | Local UI
+
+> ⚠️ **주의**: 로컬 4-bit 추론은 `bitsandbytes` 기반이며, 일반적으로 **CUDA GPU 환경에서만** 안정적으로 동작합니다.
+> Apple Silicon(MPS) 환경에서는 4-bit `bitsandbytes`가 지원되지 않거나 실패할 수 있으므로, 필요 시 Colab(T4)에서 실행하세요.
 
 ```bash
 # Install dependencies
